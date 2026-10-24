@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#c43d2f"><meta name="description" content="KEL 5 — marketplace dimsum favorit dengan pilihan rasa, promo menarik, dan pengalaman belanja yang praktis."><title>KEL 5 — Dimsum &amp; Marketplace</title><link rel="stylesheet" href="style.css?v=kel5-refresh-3"><link rel="stylesheet" href="premium.css?v=variant-compact-final-2">
+</head>
+<body>
+<!-- LOGIN / DAFTAR -->
+<div id="authPage" class="auth-page hidden">
+  <div class="auth-card">
+    <div class="auth-brand"><span class="auth-logo">KEL 5</span></div>
+    <button class="auth-close" onclick="closeAuth()">✕</button><h1 id="authTitle">Masuk ke KEL 5</h1><p id="authSubtitle">Masuk untuk melanjutkan pembelian.</p>
+    <form id="authForm">
+      <div id="nameGroup" class="field hidden"><label>Nama Lengkap</label><input id="authName" type="text" placeholder="Nama Kamu"></div>
+      <div class="field"><label>Username</label><input id="authUsername" type="text" placeholder="Username" autocomplete="username" required></div>
+      <div id="emailGroup" class="field hidden"><label>Email</label><input id="authEmail" type="email" placeholder="Gmail.com"></div>
+      <div class="field"><label>Password</label><input id="authPassword" type="password" placeholder="Minimal 6 karakter" autocomplete="current-password" required></div>
+      <div id="confirmGroup" class="field hidden"><label>Konfirmasi Password</label><input id="authConfirm" type="password" placeholder="Ulangi password"></div>
+      <button class="auth-btn" type="submit" id="authSubmit">Masuk</button>
+    </form>
+    <p id="authMessage" class="auth-message"></p>
+    <button class="switch-btn" id="switchAuth">Belum punya akun? <b>Daftar</b></button>
+    <button class="guest-continue" onclick="closeAuth()">Lanjut lihat produk</button>
+  </div>
+</div>
+
+<!-- TOKO -->
+<div id="storePage" class="hidden">
+<header class="topbar">
+  <div class="top-inner">
+    <div class="search-wrap"><div class="searchbar google-search"><input id="marketSearch" placeholder="Cari produk, merek, dan promo..." oninput="syncSearch()" aria-label="Cari produk, merek, dan promo"><button class="search-submit" type="button" onclick="runMarketSearch()" aria-label="Cari"><span class="magnifier"></span></button></div></div>
+    <button class="top-icon cart-top-btn" onclick="openCart()" aria-label="Buka keranjang belanja"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H7"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg><i id="marketCartCount">0</i></button>
+    <button class="top-icon profile-top-btn" onclick="showAccount()" aria-label="Buka profil"><span id="topProfileAvatar">👤</span></button>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="hero-inner page-width">
+    <div class="hero-banner" id="heroBanner" aria-live="polite">
+      <div class="hero-copy"><small>🔥 PROMO SPESIAL DIMSUM</small><h1>Belanja Seru,<br><em>Harga Lebih Hemat!</em></h1><p>Temukan dimsum favoritmu dengan promo menarik setiap hari.</p><button onclick="scrollProducts()">Belanja Sekarang <span>›</span></button></div>
+      <div class="hero-art"><span class="hero-sticker">PROMO</span><img class="hero-product-image" src="assets/promos/promo-dimsum.svg" alt="Ilustrasi promo dimsum"><strong>DISKON<br><em>50%</em></strong><small>Produk pilihan</small></div>
+    </div>
+    <div class="hero-dots" role="tablist" aria-label="Promo beranda">
+      <button type="button" class="selected" aria-label="Promo 1" aria-pressed="true"></button>
+      <button type="button" aria-label="Promo 2" aria-pressed="false"></button>
+      <button type="button" aria-label="Promo 3" aria-pressed="false"></button>
+      <button type="button" aria-label="Promo 4" aria-pressed="false"></button>
+      <button type="button" aria-label="Promo 5" aria-pressed="false"></button>
+      <button type="button" aria-label="Promo 6" aria-pressed="false"></button>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="promo-strip page-width"><b>⚡ FLASH SALE</b><span>Promo produk pilihan hari ini</span><strong>01 : 43 : 22</strong><a href="#produk">LIHAT SEMUA&nbsp; ›</a></section>
+
+<section class="page-width product-section" id="produk">
+ <div class="section-title"><h2>Temukan Dimsum Favoritmu</h2><span>Pilihan lezat untuk setiap momen</span></div>
+ <div class="filter-row"><button class="active" onclick="setProductTab('Semua',this)">Semua</button><button onclick="setProductTab('Terlaris',this)">Terlaris</button><button onclick="setProductTab('Promo',this)">Promo</button><button onclick="setProductTab('Baru',this)">Terbaru</button></div>
+ <div class="products" id="productGrid"></div>
+</section>
+
+<section class="page-width about" id="tentang"><div><small>TENTANG KEL 5</small><h2>Belanja praktis, pilihan makin menarik.</h2></div><p>KEL 5 adalah konsep marketplace untuk memudahkan kamu melihat produk, menyimpan pilihan ke keranjang, dan menyelesaikan pesanan dalam satu tempat.</p></section>
+</main>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" aria-label="Navigasi utama">
+ <button id="navHome" class="active" onclick="goHome()"><span class="bottom-nav-icon"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1Z"/></svg></span><small>Beranda</small></button>
+ <button id="navCart" onclick="openCart()"><span class="bottom-nav-icon"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 10.1a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H7"/><circle cx="10" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg></span><small>Keranjang</small></button>
+ <button id="navOrders" onclick="showOrders()"><span class="bottom-nav-icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M8 12h8M8 16h8"/></svg></span><small>Pesanan</small></button>
+ <button id="navAccount" onclick="showAccount()"><span class="bottom-nav-icon" id="bottomProfileAvatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><small>Akun</small></button>
+</nav>
+
+<!-- CART -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<aside class="cart" id="cart"><div class="cart-head"><h2>Keranjang</h2><button onclick="closeCart()">✕</button></div><div id="cartItems" class="cart-items"></div><div class="cart-bottom"><div class="selected-summary"><span id="cartSelectedCount">0 produk dipilih</span><strong id="cartGrandTotal">Rp0</strong></div><button onclick="openCheckout()">Checkout</button></div></aside>
+
+<!-- BUY NOW: pilih varian dan jumlah sebelum masuk ke checkout -->
+<div class="purchase-overlay" id="purchaseOverlay" aria-hidden="true" onclick="if(event.target===this)closePurchaseOptions()">
+ <section class="purchase-modal" role="dialog" aria-modal="true" aria-labelledby="purchaseModalTitle">
+  <header class="purchase-modal-head purchase-modal-head-minimal"><span class="purchase-modal-spacer" aria-hidden="true"></span><button type="button" class="purchase-close" onclick="closePurchaseOptions()" aria-label="Tutup">×</button></header>
+  <div class="purchase-product-summary"><div class="purchase-product-image"><img id="purchaseProductImage" src="" alt=""></div><div class="purchase-product-copy"><span class="purchase-mini-label">DIMSUM PILIHAN</span><h3 id="purchaseProductName">Produk</h3><p id="purchaseProductDescription">Produk pilihan KEL 5</p><strong id="purchaseProductPrice">Rp0</strong><small id="purchaseProductStock">✓ Stok tersedia</small></div></div>
+  <div class="purchase-option-section"><div class="purchase-section-title"><div><b>Pilih Jenis Dimsum</b><small>Tentukan varian yang kamu inginkan</small></div></div><div class="purchase-variant-options" role="group" aria-label="Pilihan varian"><button type="button" class="purchase-variant selected" data-purchase-variant="Frozen (beku)" onclick="selectPurchaseVariant(this)"><span class="purchase-variant-label">Frozen (beku)</span><i>✓</i></button><button type="button" class="purchase-variant" data-purchase-variant="Siap santap" onclick="selectPurchaseVariant(this)"><span class="purchase-variant-label">Siap santap</span><i>✓</i></button></div></div>
+  <div class="purchase-option-section purchase-quantity-section"><div class="purchase-quantity-row"><div><b>Jumlah Pesanan</b><small>Atur jumlah yang ingin dibeli</small></div><div class="purchase-stepper"><button type="button" onclick="changePurchaseQty(-1)" aria-label="Kurangi jumlah">−</button><output id="purchaseQtyValue" aria-live="polite">1</output><button type="button" onclick="changePurchaseQty(1)" aria-label="Tambah jumlah">+</button></div></div><div class="purchase-subtotal"><span>Subtotal</span><strong id="purchaseSubtotal">Rp0</strong></div></div>
+  <footer class="purchase-modal-footer"><div class="purchase-footer-total"><span>Subtotal</span><strong id="purchaseFooterSubtotal">Rp0</strong></div><div class="purchase-footer-actions"><button type="button" class="purchase-add-cart" onclick="addPurchaseOptionsToCart()">＋ Keranjang</button><button type="button" class="purchase-continue" onclick="confirmPurchaseOptions()">Beli Sekarang</button></div></footer>
+ </section>
+</div>
+
+<!-- CHECKOUT -->
+<div class="modal-overlay" id="checkoutOverlay"><div class="checkout-modal"><div class="checkout-head"><span class="checkout-head-spacer" aria-hidden="true"></span><h2>Checkout</h2><button type="button" aria-label="Tutup Checkout" onclick="closeCheckout()">✕</button></div>
+ <div class="checkout-scroll">
+  <section class="checkout-card checkout-address-card"><div class="location" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 10.1c0 5.2-7 10.9-7 10.9S5 15.3 5 10.1a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.4"/></svg></div><div class="checkout-address-copy"><b>Alamat Pengiriman</b><h3 id="checkoutName">-</h3><p id="checkoutAddress">Jl. Sepakat No. 12, Pontianak, Kalimantan Barat</p></div><button type="button" class="checkout-address-edit" aria-label="Ubah alamat pengiriman" title="Ubah alamat pengiriman" onclick="openAccountAddressSettings()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button></section>
+  <section class="checkout-card"><div class="card-title"><b>Produk</b><span id="checkoutItemsText">1 Produk</span></div><div id="checkoutProducts"></div></section>
+  <section class="checkout-card voucher-checkout"><div class="card-title voucher-card-title"><b><span class="voucher-heading-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7.5A2.5 2.5 0 0 0 6.5 5h11A2.5 2.5 0 0 0 20 7.5v2a2.5 2.5 0 0 0 0 5v2a2.5 2.5 0 0 0-2.5 2.5h-11A2.5 2.5 0 0 0 4 16.5v-2a2.5 2.5 0 0 0 0-5z"/><path d="m9 15 6-6M9 9h.1M15 15h.1"/></svg></span>Voucher</b><button type="button" class="voucher-more-btn" onclick="toggleVoucherOptions()">Pilihan lainnya ›</button></div><div class="voucher-picker"><div class="voucher-current" id="voucherCurrentSummary"><span class="voucher-current-icon">🎟️</span><span class="voucher-open-copy"><b id="voucherSummaryTitle">Tanpa Voucher</b><small id="voucherSummaryText">Pilih “Pilihan lainnya” untuk mengganti voucher</small></span><span class="voucher-current-check">✓</span></div><select id="checkoutVoucher" aria-label="Pilih voucher" onchange="applyCheckoutVoucher()" hidden><option value="none">Tanpa voucher</option><option value="shipping">Gratis Ongkir · Hemat hingga Rp12.000</option><option value="discount">Diskon 10% · Maksimal Rp15.000</option><option value="combo">Promo Hemat · Diskon 5% + Gratis Ongkir</option><option value="discount5">Diskon Rp5.000</option><option value="shippingplus">Gratis Ongkir Ekstra</option></select><div class="voucher-options" id="voucherOptionsPanel" hidden><button type="button" data-voucher="shipping" onclick="selectCheckoutVoucher('shipping')"><span class="voucher-ticket">🚚</span><span class="voucher-copy"><b>Gratis Ongkir</b><small>Hemat ongkir hingga Rp12.000</small></span><span class="voucher-pick">Pakai</span></button><button type="button" data-voucher="discount" onclick="selectCheckoutVoucher('discount')"><span class="voucher-ticket">％</span><span class="voucher-copy"><b>Diskon 10%</b><small>Maksimal potongan Rp15.000</small></span><span class="voucher-pick">Pakai</span></button><button type="button" data-voucher="combo" onclick="selectCheckoutVoucher('combo')"><span class="voucher-ticket">🎟️</span><span class="voucher-copy"><b>Promo Hemat</b><small>Diskon 5% + gratis ongkir</small></span><span class="voucher-pick">Pakai</span></button><button type="button" data-voucher="discount5" onclick="selectCheckoutVoucher('discount5')"><span class="voucher-ticket">Rp</span><span class="voucher-copy"><b>Potongan Rp5.000</b><small>Minimal belanja Rp50.000</small></span><span class="voucher-pick">Pakai</span></button><button type="button" data-voucher="shippingplus" onclick="selectCheckoutVoucher('shippingplus')"><span class="voucher-ticket">↗</span><span class="voucher-copy"><b>Gratis Ongkir Ekstra</b><small>Hemat biaya pengiriman hingga Rp12.000</small></span><span class="voucher-pick">Pakai</span></button><button type="button" data-voucher="none" onclick="selectCheckoutVoucher('none')"><span class="voucher-ticket">×</span><span class="voucher-copy"><b>Tanpa Voucher</b><small>Lanjutkan tanpa promo</small></span><span class="voucher-pick">Pilih</span></button></div><p id="voucherMessage">Pilih voucher yang sesuai untuk menghemat belanja.</p></div></section>
+  <section class="checkout-card pickup-card"><div class="pickup-option-row"><span class="pickup-option-icon"><img src="assets/pickup.svg" alt=""></span><span class="pickup-option-copy"><b>Ambil langsung di toko</b><small>Ambil pesanan sendiri · Gratis ongkir</small></span><label class="pickup-toggle"><input id="pickupAtStoreToggle" type="checkbox" onchange="togglePickupAtStore(this.checked)"><span class="pickup-radio" aria-hidden="true"></span></label></div></section>
+  <section class="checkout-card shipping-card"><div class="card-title"><b>🚚 Jasa Pengiriman</b><button type="button" onclick="openShipping()">Pilihan lainnya ›</button></div><div id="selectedShipping" class="selected-payment"><img src="assets/jnt.svg"><div><b>J&T Express</b><span>Estimasi 2–4 hari · Rp12.000</span></div><strong>✓</strong></div><div class="checkout-choice-grid shipping-choice-grid" aria-label="Pilih jasa pengiriman"><button type="button" class="checkout-choice selected" data-shipping-choice="J&T Express" onclick="selectShipping('J&T Express','assets/jnt.svg','Estimasi 2–4 hari','Rp12.000')"><img src="assets/jnt.svg" alt=""><span>J&T Express</span><small>Rp12.000</small></button><button type="button" class="checkout-choice" data-shipping-choice="JNE" onclick="selectShipping('JNE','assets/jne.svg','Estimasi 2–4 hari','Rp12.000')"><img src="assets/jne.svg" alt=""><span>JNE</span><small>Rp12.000</small></button><button type="button" class="checkout-choice" data-shipping-choice="SiCepat" onclick="selectShipping('SiCepat','assets/sicepat.svg','Estimasi 2–4 hari','Rp13.000')"><img src="assets/sicepat.svg" alt=""><span>SiCepat</span><small>Rp13.000</small></button><button type="button" class="checkout-choice" data-shipping-choice="AnterAja" onclick="selectShipping('AnterAja','assets/anteraja.svg','Estimasi 2–5 hari','Rp11.000')"><img src="assets/anteraja.svg" alt=""><span>AnterAja</span><small>Rp11.000</small></button><button type="button" class="checkout-choice" data-shipping-choice="Gojek (GoSend)" onclick="selectShipping('Gojek (GoSend)','assets/gojek.svg','Estimasi sekitar 1 hari','Rp15.000')"><img src="assets/gojek.svg" alt=""><span>Gojek (GoSend)</span><small>Rp15.000</small></button></div></section>
+  <section class="checkout-card payment-card"><div class="card-title"><b>💳 Metode Pembayaran</b><button type="button" onclick="openPayment()">Pilihan lainnya ›</button></div><div id="selectedPayment" class="selected-payment"><img src="assets/bri.svg"><div><b>Transfer Bank</b><span>BRI</span></div><strong>✓</strong></div><div class="checkout-choice-grid payment-choice-grid" aria-label="Pilih metode pembayaran"><button type="button" class="checkout-choice selected" data-payment-choice="BRI" onclick="selectPayment('BRI','assets/bri.svg')"><img src="assets/bri.svg" alt=""><span>BRI</span></button><button type="button" class="checkout-choice" data-payment-choice="BCA" onclick="selectPayment('BCA','assets/bca.svg')"><img src="assets/bca.svg" alt=""><span>BCA</span></button><button type="button" class="checkout-choice" data-payment-choice="BNI" onclick="selectPayment('BNI','assets/bni.svg')"><img src="assets/bni.svg" alt=""><span>BNI</span></button><button type="button" class="checkout-choice" data-payment-choice="Mandiri" onclick="selectPayment('Mandiri','assets/mandiri.svg')"><img src="assets/mandiri.svg" alt=""><span>Mandiri</span></button><button type="button" class="checkout-choice" data-payment-choice="DANA" onclick="selectPayment('DANA','assets/dana.svg')"><img src="assets/dana.svg" alt=""><span>DANA</span></button><button type="button" class="checkout-choice" data-payment-choice="OVO" onclick="selectPayment('OVO','assets/ovo.svg')"><img src="assets/ovo.svg" alt=""><span>OVO</span></button><button type="button" class="checkout-choice" data-payment-choice="GoPay" onclick="selectPayment('GoPay','assets/gopay.svg')"><img src="assets/gopay.svg" alt=""><span>GoPay</span></button><button type="button" class="checkout-choice" data-payment-choice="QRIS" onclick="selectPayment('QRIS','assets/qris.svg')"><img src="assets/qris.svg" alt=""><span>QRIS</span></button><button type="button" class="checkout-choice" data-payment-choice="COD" onclick="selectPayment('COD','assets/cod.svg')"><img src="assets/cod.svg" alt=""><span>COD</span></button></div></section>
+  <section class="checkout-card"><h3>Rincian Pembayaran</h3><div class="detail"><span>Subtotal Pengiriman</span><b id="checkoutShippingCost">Rp12.000</b></div><div class="detail"><span>Potongan Voucher</span><b id="checkoutDiscount">Rp0</b></div><div class="detail"><span>Biaya Layanan</span><b>Rp2.000</b></div><div class="detail"><span>Subtotal Pesanan</span><b id="checkoutSubtotal">Rp0</b></div></section>
+ </div><div class="checkout-footer checkout-footer-actions"><div class="checkout-footer-price-row"><span>Ongkir</span><strong id="checkoutFooterShipping">Rp12.000</strong></div><div class="checkout-footer-price-row checkout-footer-service-row"><span>Biaya layanan</span><strong>Rp2.000</strong></div><div class="checkout-footer-price-row"><span>Subtotal</span><strong id="checkoutFooterSubtotal">Rp0</strong></div><div class="checkout-footer-grand-total"><span>Total Pembayaran</span><strong id="checkoutTotal">Rp0</strong></div><button type="button" id="checkoutBuyNow" class="checkout-buy-now" onclick="placeOrder()">Buat Pesanan</button></div>
+</div></div>
+
+<!-- PAYMENT -->
+<div class="modal-overlay" id="paymentOverlay"><div class="payment-modal"><div class="checkout-head"><button onclick="closePayment()">‹</button><h2>Metode Pembayaran</h2><button onclick="closePayment()">✕</button></div><div class="payment-list payment-method-groups">
+ <p class="payment-group-title">Bank</p>
+ <button onclick="selectPayment('BRI','assets/bri.svg')"><img src="assets/bri.svg"><span>BRI</span><i>○</i></button>
+ <button onclick="selectPayment('BCA','assets/bca.svg')"><img src="assets/bca.svg"><span>BCA</span><i>○</i></button>
+ <button onclick="selectPayment('BNI','assets/bni.svg')"><img src="assets/bni.svg"><span>BNI</span><i>○</i></button>
+ <button onclick="selectPayment('Mandiri','assets/mandiri.svg')"><img src="assets/mandiri.svg"><span>Mandiri</span><i>○</i></button>
+ <p class="payment-group-title">E-Wallet</p>
+ <button onclick="selectPayment('DANA','assets/dana.svg')"><img src="assets/dana.svg"><span>DANA</span><i>○</i></button><button onclick="selectPayment('OVO','assets/ovo.svg')"><img src="assets/ovo.svg"><span>OVO</span><i>○</i></button><button onclick="selectPayment('GoPay','assets/gopay.svg')"><img src="assets/gopay.svg"><span>GoPay</span><i>○</i></button>
+ <p class="payment-group-title">QRIS</p><button onclick="selectPayment('QRIS','assets/qris.svg')"><img src="assets/qris.svg" alt=""><span>QRIS</span><i>○</i></button>
+ <p class="payment-group-title">COD</p><button onclick="selectPayment('COD','assets/cod.svg')"><img src="assets/cod.svg"><span>COD (Bayar di Tempat)</span><i>○</i></button>
+ </div><button class="confirm-payment" onclick="confirmPayment()">Konfirmasi</button></div></div>
+
+<!-- SHIPPING -->
+<div class="modal-overlay" id="shippingOverlay"><div class="payment-modal"><div class="checkout-head"><button onclick="closeShipping()">‹</button><h2>Jasa Pengiriman</h2><button onclick="closeShipping()">✕</button></div><div class="payment-list">
+ <p>Kurir Reguler</p>
+ <button onclick="selectShipping('JNE','assets/jne.svg','Estimasi 2–4 hari','Rp12.000')"><img src="assets/jne.svg"><span>JNE Express</span><small>2–4 hari · Rp12.000</small><i>○</i></button>
+ <button onclick="selectShipping('J&T Express','assets/jnt.svg','Estimasi 2–4 hari','Rp12.000')"><img src="assets/jnt.svg"><span>J&T Express</span><small>2–4 hari · Rp12.000</small><i>○</i></button>
+ <button onclick="selectShipping('SiCepat','assets/sicepat.svg','Estimasi 2–4 hari','Rp13.000')"><img src="assets/sicepat.svg"><span>SiCepat</span><small>2–4 hari · Rp13.000</small><i>○</i></button>
+ <button onclick="selectShipping('AnterAja','assets/anteraja.svg','Estimasi 2–5 hari','Rp11.000')"><img src="assets/anteraja.svg"><span>AnterAja</span><small>2–5 hari · Rp11.000</small><i>○</i></button>
+ <button onclick="selectShipping('POS Indonesia','assets/pos.svg','Estimasi 3–5 hari','Rp10.000')"><img src="assets/pos.svg"><span>POS Indonesia</span><small>3–5 hari · Rp10.000</small><i>○</i></button>
+ <button onclick="selectShipping('Gojek (GoSend)','assets/gojek.svg','Estimasi 1 hari','Rp15.000')"><img src="assets/gojek.svg"><span>Gojek (GoSend)</span><small>Estimasi 1 hari · Rp15.000</small><i>○</i></button>
+ </div><button class="confirm-payment" onclick="confirmShipping()">Konfirmasi</button></div></div>
+
+<!-- VOUCHER PICKER -->
+<div class="modal-overlay" id="voucherOverlay"><div class="payment-modal voucher-modal"><div class="checkout-head"><button onclick="closeVoucher()">‹</button><h2>Pilih Voucher</h2><button onclick="closeVoucher()">✕</button></div><div class="voucher-intro"><span class="voucher-brand-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 13a4 4 0 0 1 4-4h26a4 4 0 0 1 4 4v6a5 5 0 0 0 0 10v6a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4v-6a5 5 0 0 0 0-10z"/><path d="m18 31 12-14M18 18h.1M30 30h.1"/></svg></span><div><b>Voucher KEL 5</b><small>Pilih satu promo untuk pesananmu</small></div></div><div class="payment-list voucher-list">
+ <p>Voucher Pengiriman</p>
+ <button type="button" data-voucher="shipping" onclick="chooseVoucher('shipping')"><span class="voucher-modal-icon shipping"><svg viewBox="0 0 24 24"><path d="M3 6h11v11H3zM14 10h4l3 4v3h-7z"/><circle cx="7" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></span><span class="voucher-modal-copy"><b>Gratis Ongkir</b><small>Hemat biaya kirim hingga Rp12.000</small><em>Min. belanja Rp20.000</em></span><i>○</i></button>
+ <button type="button" data-voucher="shippingplus" onclick="chooseVoucher('shippingplus')"><span class="voucher-modal-icon shipping"><svg viewBox="0 0 24 24"><path d="M3 6h11v11H3zM14 10h4l3 4v3h-7z"/><path d="M7 3v4M5 5h4"/><circle cx="7" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></span><span class="voucher-modal-copy"><b>Gratis Ongkir Ekstra</b><small>Potongan ongkir hingga Rp12.000</small><em>Promo pilihan KEL 5</em></span><i>○</i></button>
+ <p>Voucher Diskon</p>
+ <button type="button" data-voucher="discount" onclick="chooseVoucher('discount')"><span class="voucher-modal-icon discount"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg></span><span class="voucher-modal-copy"><b>Diskon 10%</b><small>Potongan maksimal Rp15.000</small><em>Lebih hemat untuk belanja banyak</em></span><i>○</i></button>
+ <button type="button" data-voucher="discount5" onclick="chooseVoucher('discount5')"><span class="voucher-modal-icon discount"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg></span><span class="voucher-modal-copy"><b>Potongan Rp5.000</b><small>Langsung potong total belanja Rp5.000</small><em>Min. belanja Rp50.000</em></span><i>○</i></button>
+ <button type="button" data-voucher="combo" onclick="chooseVoucher('combo')"><span class="voucher-modal-icon combo"><svg viewBox="0 0 24 24"><path d="M3 8a3 3 0 0 0 0 6v3h18v-3a3 3 0 0 1 0-6V5H3z"/><path d="m9 14 6-6M9 8h.1M15 14h.1"/></svg></span><span class="voucher-modal-copy"><b>Promo Hemat Kombo</b><small>Diskon 5% + gratis ongkir</small><em>Gabungan dua promo</em></span><i>○</i></button>
+ <p>Voucher Lainnya</p>
+ <button type="button" data-voucher="none" onclick="chooseVoucher('none')"><span class="voucher-modal-icon none"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span><span class="voucher-modal-copy"><b>Tanpa Voucher</b><small>Lanjutkan tanpa menggunakan promo</small></span><i>○</i></button>
+ </div></div></div>
+
+<!-- SIMPLE PAGES -->
+<div class="simple-modal" id="simpleModal"><div class="simple-card"><button onclick="closeSimple()">✕</button><div id="simpleContent"></div></div></div>
+</div>
+<script src="script.js?v=kel5-all-features-1"></script>
+
+<script>
+/* V37: working promo dots and slower automatic banner rotation */
+(function () {
+  function initK5AutoRotation() {
+    const search = document.getElementById('marketSearch');
+    const banner = document.getElementById('heroBanner');
+    const slides = [
+      {hint:'Cari produk, merek, dan promo...', eyebrow:'🔥 PROMO SPESIAL DIMSUM', title:'Belanja Seru,', emphasis:'Harga Lebih Hemat!', description:'Temukan dimsum favoritmu dengan promo menarik setiap hari.', button:'Belanja Sekarang', sticker:'PROMO', image:'assets/promos/promo-dimsum.svg', alt:'Paket dimsum dengan promo diskon', label:'DISKON', value:'50%', note:'Produk pilihan', bg:'linear-gradient(110deg,#fff2e9 0%,#ffe1ce 52%,#ffb28c 100%)'},
+      {hint:'Cari dimsum favoritmu...', eyebrow:'✨ FAVORIT PELANGGAN', title:'Dimsum Favorit,', emphasis:'Rasa Bikin Nagih!', description:'Pilih varian kesukaanmu, dari ayam original sampai mentai creamy.', button:'Lihat Produk', sticker:'BEST SELLER', image:'assets/promos/promo-favorit.svg', alt:'Ilustrasi dimsum favorit pelanggan', label:'PILIHAN', value:'HOT', note:'Pilihan terlaris', bg:'linear-gradient(110deg,#fff7d9 0%,#ffe7a9 52%,#ffbd79 100%)'},
+      {hint:'Cari promo hari ini...', eyebrow:'🎁 BELANJA MAKIN UNTUNG', title:'Paket Kombo,', emphasis:'Makin Hemat!', description:'Cek pilihan dimsum mix box untuk dinikmati bersama teman dan keluarga.', button:'Pilih Paket', sticker:'COMBO', image:'assets/promos/promo-kombo.svg', alt:'Ilustrasi paket kombo dimsum', label:'PAKET', value:'HEMAT', note:'Paket pilihan', bg:'linear-gradient(110deg,#e8fff4 0%,#c9f3e2 52%,#8ed9bf 100%)'},
+      {hint:'Cari camilan untuk keluarga...', eyebrow:'👨‍👩‍👧‍👦 TEMAN MAKAN BERSAMA', title:'Momen Makin', emphasis:'Seru Bareng DIMSUM!', description:'Lengkapi waktu santai bersama keluarga dengan dimsum favorit.', button:'Belanja Sekarang', sticker:'MOMEN SERU', image:'assets/promos/promo-dimsum.svg', alt:'Promo dimsum untuk keluarga', label:'BONUS', value:'SERU', note:'Cocok untuk bersama', bg:'linear-gradient(110deg,#f2edff 0%,#e0d5ff 52%,#b9a5ff 100%)'},
+      {hint:'Cari paket favorit...', eyebrow:'🥟 PILIHAN DIMSUM LEZAT', title:'Camilan Lezat,', emphasis:'Temani Harimu!', description:'Ada pilihan camilan lezat untuk menemani waktu istirahatmu.', button:'Lihat Produk', sticker:'LEZAT', image:'assets/promos/promo-favorit.svg', alt:'Pilihan dimsum lezat', label:'ENAK', value:'BANGET', note:'Favorit setiap hari', bg:'linear-gradient(110deg,#e8f5ff 0%,#cceaff 52%,#8dc9f7 100%)'},
+      {hint:'Cari paket hemat...', eyebrow:'💝 PROMO KHUSUS UNTUKMU', title:'Pilih Favoritmu,', emphasis:'Nikmati Lebih Hemat!', description:'Jelajahi produk dan temukan pilihan yang pas untukmu.', button:'Jelajahi Produk', sticker:'SPECIAL', image:'assets/promos/promo-kombo.svg', alt:'Promo paket dimsum hemat', label:'PROMO', value:'SPESIAL', note:'Jangan sampai terlewat', bg:'linear-gradient(110deg,#fff0f5 0%,#ffd6e5 52%,#ff9fc4 100%)'}
+    ];
+    if (search && !search.dataset.autoHintBound) {
+      let hintIndex = 0;
+      search.placeholder = slides[0].hint;
+      setInterval(function () {
+        if (!search.value.trim()) {
+          hintIndex = (hintIndex + 1) % slides.length;
+          search.placeholder = slides[hintIndex].hint;
+        }
+      }, 2200);
+      search.dataset.autoHintBound = '1';
+    }
+    if (!banner || banner.dataset.autoPromoBound) return;
+    const dots = document.querySelector('.hero-dots');
+    if (dots && dots.children.length !== slides.length) {
+      dots.innerHTML = slides.map((_, i) => '<button type="button" aria-label="Promo ' + (i + 1) + '" aria-pressed="' + (i === 0 ? 'true' : 'false') + '" class="' + (i === 0 ? 'selected' : '') + '"></button>').join('');
+    }
+    let index = 0;
+    function displaySlide(next) {
+      index = (next + slides.length) % slides.length;
+      const s = slides[index];
+      const eyebrow = banner.querySelector('.hero-copy small');
+      const title = banner.querySelector('.hero-copy h1');
+      const desc = banner.querySelector('.hero-copy p');
+      const cta = banner.querySelector('.hero-copy button');
+      const sticker = banner.querySelector('.hero-sticker');
+      const image = banner.querySelector('.hero-product-image');
+      const discount = banner.querySelector('.hero-art strong');
+      const note = banner.querySelector('.hero-art>small');
+      if (eyebrow) eyebrow.textContent = s.eyebrow;
+      if (title) title.innerHTML = s.title + '<br><em>' + s.emphasis + '</em>';
+      if (desc) desc.textContent = s.description;
+      if (cta) { cta.innerHTML = s.button + ' <span>›</span>'; cta.onclick = function(){ document.getElementById('produk')?.scrollIntoView({behavior:'smooth'}); }; }
+      if (sticker) sticker.textContent = s.sticker;
+      if (image) { image.src = s.image; image.alt = s.alt; }
+      if (discount) discount.innerHTML = s.label + '<br><em>' + s.value + '</em>';
+      if (note) note.textContent = s.note;
+      banner.style.setProperty('background', s.bg, 'important');
+      banner.classList.remove('hero-refresh'); void banner.offsetWidth; banner.classList.add('hero-refresh');
+      document.querySelectorAll('.hero-dots button').forEach(function(dot, i){dot.classList.toggle('selected',i===index);dot.setAttribute('aria-pressed',i===index?'true':'false');});
+    }
+    document.querySelectorAll('.hero-dots button').forEach(function(dot,i){dot.onclick=function(){displaySlide(i);};});
+    displaySlide(0);
+    setInterval(function(){ if (!document.hidden) displaySlide(index+1); }, 6500);
+    banner.dataset.autoPromoBound = '1';
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initK5AutoRotation, {once:true});
+  else initK5AutoRotation();
+})();
+</script>
+
+<script>
+/* KEL 5 quality pass: persistent flash-sale clock, search relevance and accessible feedback. */
+(function(){
+  const grid=document.getElementById('productGrid');
+  const search=document.getElementById('marketSearch');
+  if(grid){
+    const observer=new MutationObserver(()=>{
+      grid.querySelectorAll('img').forEach(img=>{img.loading='lazy';img.decoding='async';if(!img.hasAttribute('width')){img.width=240;img.height=214;}});
+      const empty=grid.querySelector('p');
+      if(empty && /Produk tidak ditemukan/i.test(empty.textContent)){
+        empty.className='product-empty';
+        empty.innerHTML='<strong>Produk belum ditemukan</strong><span>Coba kata kunci lain atau tampilkan semua produk.</span><br><button type="button" id="resetProductSearch">Tampilkan Semua Produk</button>';
+        document.getElementById('resetProductSearch')?.addEventListener('click',()=>{if(search)search.value='';if(typeof setProductTab==='function')setProductTab('Semua',document.querySelector('.filter-row button'));else if(typeof renderProducts==='function')renderProducts('');});
+      }
+    });
+    observer.observe(grid,{childList:true,subtree:true});
+  }
+  // A real, ticking demo timer instead of a static countdown. It resets daily and is not a real sale deadline.
+  const timer=document.querySelector('.promo-strip strong');
+  if(timer){
+    const key='kel5DemoFlashSaleEnd';
+    let end=Number(localStorage.getItem(key));
+    if(!Number.isFinite(end)||end<Date.now()){end=Date.now()+((24*60*60*1000)-(Date.now()% (24*60*60*1000)));localStorage.setItem(key,String(end));}
+    const tick=()=>{let left=Math.max(0,end-Date.now());const h=Math.floor(left/3600000),m=Math.floor(left%3600000/60000),s=Math.floor(left%60000/1000);timer.textContent=[h,m,s].map(n=>String(n).padStart(2,'0')).join(' : ');timer.setAttribute('aria-label','Waktu demo promo tersisa '+h+' jam '+m+' menit '+s+' detik');};tick();setInterval(tick,1000);
+    const label=document.querySelector('.promo-strip span');if(label)label.textContent='Hitung mundur promo demo';
+  }
+  if(search){search.setAttribute('autocomplete','off');search.setAttribute('aria-label','Cari produk berdasarkan nama atau deskripsi');}
+})();
+</script>
+</body></html>
